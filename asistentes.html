@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tour Gastronómico Thermomix - León 2026</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: #0a0a0a;
+            color: #f5f5f5;
+            min-height: 100vh;
+        }
+        nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 2rem;
+            background: #111;
+            border-bottom: 2px solid #6c5ce7;
+        }
+        nav a { color: #6c5ce7; text-decoration: none; font-size: 0.9rem; }
+        nav a:hover { text-decoration: underline; }
+        nav .title { color: #fff; font-weight: 600; }
+
+        .container { max-width: 800px; margin: 0 auto; padding: 2rem 1.5rem; }
+
+        /* Hero del evento */
+        .event-hero {
+            text-align: center;
+            padding: 2.5rem 1.5rem;
+            background: linear-gradient(135deg, #1a1a2e 0%, #2d1b69 100%);
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(108, 92, 231, 0.3);
+        }
+        .event-hero .icon { font-size: 3.5rem; margin-bottom: 1rem; }
+        .event-hero h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+            background: linear-gradient(90deg, #fff, #a29bfe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .event-hero p { color: #a0a0a0; font-size: 1.05rem; }
+        .event-hero .date {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1.2rem;
+            background: rgba(108, 92, 231, 0.2);
+            border: 1px solid #6c5ce7;
+            border-radius: 12px;
+            padding: 0.7rem 1.3rem;
+            color: #a29bfe;
+            font-weight: 600;
+        }
+
+        /* Info */
+        .details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .detail-card {
+            background: #141414;
+            border: 1px solid #2a2a2a;
+            border-radius: 16px;
+            padding: 1.5rem;
+            transition: border-color 0.3s;
+        }
+        .detail-card:hover { border-color: #6c5ce7; }
+        .detail-card .d-icon { font-size: 1.5rem; margin-bottom: 0.6rem; }
+        .detail-card h3 {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #6c5ce7;
+            margin-bottom: 0.3rem;
+        }
+        .detail-card p { color: #ddd; font-size: 1rem; }
+        .detail-card .sub { color: #888; font-size: 0.85rem; margin-top: 0.2rem; }
+
+        /* Sessions */
+        .sessions {
+            background: #141414;
+            border: 1px solid #2a2a2a;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        .sessions h2 {
+            font-size: 1.2rem;
+            color: #6c5ce7;
+            margin-bottom: 1.2rem;
+        }
+        .sess {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid #1e1e1e;
+        }
+        .sess:last-child { border-bottom: none; }
+        .sess-time {
+            background: #6c5ce7;
+            color: #fff;
+            font-weight: 700;
+            font-size: 0.85rem;
+            padding: 0.4rem 0.8rem;
+            border-radius: 8px;
+            min-width: 65px;
+            text-align: center;
+        }
+        .sess-info h4 { font-size: 1rem; margin-bottom: 0.15rem; }
+        .sess-info p { font-size: 0.85rem; color: #888; }
+
+        /* Que esperar */
+        .expect {
+            background: #141414;
+            border: 1px solid #2a2a2a;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        .expect h2 {
+            font-size: 1.2rem;
+            color: #6c5ce7;
+            margin-bottom: 1rem;
+        }
+        .expect-list { list-style: none; }
+        .expect-list li {
+            padding: 0.7rem 0;
+            border-bottom: 1px solid #1e1e1e;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            color: #ccc;
+            font-size: 0.95rem;
+        }
+        .expect-list li:last-child { border-bottom: none; }
+        .expect-list li span { font-size: 1.2rem; }
+
+        /* Nav cards */
+        .nav-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .nav-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            background: #141414;
+            border: 1px solid #2a2a2a;
+            border-radius: 16px;
+            padding: 2rem 1.5rem;
+            text-decoration: none;
+            color: #f5f5f5;
+            transition: all 0.3s;
+        }
+        .nav-card:hover {
+            border-color: #6c5ce7;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(108, 92, 231, 0.1);
+        }
+        .nav-card .nav-icon { font-size: 2.5rem; margin-bottom: 0.8rem; }
+        .nav-card h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.3rem; }
+        .nav-card p { font-size: 0.8rem; color: #888; }
+        .nav-card .arrow {
+            margin-top: 0.8rem;
+            color: #6c5ce7;
+            font-size: 1.1rem;
+            transition: transform 0.3s;
+        }
+        .nav-card:hover .arrow { transform: translateX(4px); }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            border-top: 1px solid #1a1a1a;
+            color: #555;
+            font-size: 0.85rem;
+        }
+        footer a { color: #6c5ce7; text-decoration: none; }
+
+        @media (max-width: 600px) {
+            .details-grid, .nav-grid { grid-template-columns: 1fr; }
+            .event-hero h1 { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="index.html">&larr; Inicio</a>
+        <span class="title">Tour Gastronómico Thermomix</span>
+        <span></span>
+    </nav>
+
+    <div class="container">
+
+        <!-- Hero -->
+        <div class="event-hero">
+            <div class="icon">&#127860;</div>
+            <h1>Tour Gastronómico</h1>
+            <p>Thermomix - Cooking Studio León</p>
+            <div class="date">
+                <span>&#128197;</span>
+                Martes 21 de Abril, 2026
+            </div>
+        </div>
+
+        <!-- Detalles -->
+        <div class="details-grid">
+            <div class="detail-card">
+                <div class="d-icon">&#128205;</div>
+                <h3>Lugar</h3>
+                <p>Cooking Studio Thermomix</p>
+                <p class="sub">León, Guanajuato</p>
+            </div>
+            <div class="detail-card">
+                <div class="d-icon">&#128101;</div>
+                <h3>Participantes</h3>
+                <p>~30 personas por sesión</p>
+                <p class="sub">Experiencia culinaria interactiva</p>
+            </div>
+            <div class="detail-card">
+                <div class="d-icon">&#127859;</div>
+                <h3>Dinámica</h3>
+                <p>Cocina en vivo</p>
+                <p class="sub">Preguntas y respuestas con expertos</p>
+            </div>
+            <div class="detail-card">
+                <div class="d-icon">&#128247;</div>
+                <h3>Recuerdos</h3>
+                <p>Fotografía profesional</p>
+                <p class="sub">Video del evento disponible después</p>
+            </div>
+        </div>
+
+        <!-- Sesiones -->
+        <div class="sessions">
+            <h2>&#128336; Horarios de las sesiones</h2>
+            <div class="sess">
+                <div class="sess-time">11:00</div>
+                <div class="sess-info">
+                    <h4>Primera sesión</h4>
+                    <p>Tour gastronómico con el primer grupo</p>
+                </div>
+            </div>
+            <div class="sess">
+                <div class="sess-time">17:00</div>
+                <div class="sess-info">
+                    <h4>Segunda sesión</h4>
+                    <p>Tour gastronómico con el segundo grupo</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Qué esperar -->
+        <div class="expect">
+            <h2>&#127775; ¿Qué esperar?</h2>
+            <ul class="expect-list">
+                <li><span>&#127859;</span> Cocina en vivo con Thermomix</li>
+                <li><span>&#128172;</span> Espacio de preguntas y respuestas</li>
+                <li><span>&#128247;</span> Sesión de fotos profesionales</li>
+                <li><span>&#127909;</span> Video del evento como recuerdo</li>
+                <li><span>&#129382;</span> Degustación de platillos preparados</li>
+                <li><span>&#127881;</span> Ambiente divertido y colaborativo</li>
+            </ul>
+        </div>
+
+        <!-- Links -->
+        <div class="nav-grid">
+            <a href="invitacion.html" class="nav-card">
+                <div class="nav-icon">&#9993;</div>
+                <h3>Invitación</h3>
+                <p>Ver invitación completa y confirmar asistencia</p>
+                <div class="arrow">&rarr;</div>
+            </a>
+            <a href="galeria.html" class="nav-card">
+                <div class="nav-icon">&#128247;</div>
+                <h3>Galería de Fotos</h3>
+                <p>Fotos del evento (disponible después del 21 de Abril)</p>
+                <div class="arrow">&rarr;</div>
+            </a>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>Thermomix México | Cobertura por <a href="https://foro7.invitados.org">Foro 7 Producciones</a></p>
+    </footer>
+
+</body>
+</html>

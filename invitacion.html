@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invitación - Tour Gastronómico Thermomix León</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: #0a0a0a;
+            color: #f5f5f5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 2rem;
+            background: #111;
+            border-bottom: 1px solid #222;
+        }
+        nav a { color: #00b894; text-decoration: none; font-size: 0.9rem; }
+        nav .title { color: #fff; font-weight: 600; }
+
+        .invitation-wrapper {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1.5rem;
+        }
+
+        .invitation {
+            max-width: 500px;
+            width: 100%;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            border: 1px solid rgba(0, 184, 148, 0.3);
+            border-radius: 24px;
+            padding: 3rem 2.5rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+        .invitation::before {
+            content: '';
+            position: absolute;
+            top: -2px; left: -2px; right: -2px; bottom: -2px;
+            background: linear-gradient(135deg, #00b894, transparent, #00b894);
+            border-radius: 25px;
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        .inv-badge {
+            display: inline-block;
+            background: rgba(0, 184, 148, 0.15);
+            border: 1px solid rgba(0, 184, 148, 0.3);
+            border-radius: 50px;
+            padding: 0.3rem 1rem;
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #00b894;
+            margin-bottom: 1.5rem;
+        }
+
+        .inv-icon { font-size: 3.5rem; margin-bottom: 1rem; }
+
+        .invitation h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(90deg, #fff, #00b894);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .invitation h2 {
+            font-size: 1rem;
+            font-weight: 400;
+            color: #a0a0a0;
+            margin-bottom: 2rem;
+        }
+
+        .inv-details {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .inv-detail {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-align: left;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 1rem;
+        }
+        .inv-detail .d-icon { font-size: 1.5rem; flex-shrink: 0; }
+        .inv-detail .d-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #00b894;
+        }
+        .inv-detail .d-value {
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .inv-desc {
+            color: #bbb;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            padding: 0 1rem;
+        }
+
+        .inv-cta {
+            display: inline-block;
+            background: #00b894;
+            color: #000;
+            font-weight: 700;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        .inv-cta:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(0, 184, 148, 0.3);
+        }
+
+        .inv-footer {
+            margin-top: 2rem;
+            color: #555;
+            font-size: 0.8rem;
+        }
+
+        /* Animation */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .invitation > * {
+            animation: fadeUp 0.6s ease-out both;
+        }
+        .invitation > *:nth-child(2) { animation-delay: 0.1s; }
+        .invitation > *:nth-child(3) { animation-delay: 0.2s; }
+        .invitation > *:nth-child(4) { animation-delay: 0.3s; }
+        .invitation > *:nth-child(5) { animation-delay: 0.4s; }
+        .invitation > *:nth-child(6) { animation-delay: 0.5s; }
+        .invitation > *:nth-child(7) { animation-delay: 0.6s; }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: #555;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="asistentes.html">&larr; Info del Evento</a>
+        <span class="title">Invitación</span>
+        <span></span>
+    </nav>
+
+    <div class="invitation-wrapper">
+        <div class="invitation">
+            <div class="inv-badge">Te invitamos</div>
+            <div class="inv-icon">&#127860;</div>
+            <h1>Tour Gastronómico</h1>
+            <h2>Thermomix - León 2026</h2>
+
+            <div class="inv-details">
+                <div class="inv-detail">
+                    <div class="d-icon">&#128197;</div>
+                    <div>
+                        <div class="d-label">Fecha</div>
+                        <div class="d-value">Martes 21 de Abril, 2026</div>
+                    </div>
+                </div>
+                <div class="inv-detail">
+                    <div class="d-icon">&#128336;</div>
+                    <div>
+                        <div class="d-label">Horarios</div>
+                        <div class="d-value">Sesión 1: 11:00 hrs | Sesión 2: 17:00 hrs</div>
+                    </div>
+                </div>
+                <div class="inv-detail">
+                    <div class="d-icon">&#128205;</div>
+                    <div>
+                        <div class="d-label">Lugar</div>
+                        <div class="d-value">Cooking Studio Thermomix, León, Gto.</div>
+                    </div>
+                </div>
+            </div>
+
+            <p class="inv-desc">
+                Una experiencia culinaria donde los participantes cocinarán con Thermomix,
+                disfrutarán de un espacio de preguntas y respuestas, y vivirán un tour gastronómico
+                que despertará todos los sentidos.
+            </p>
+
+            <button class="inv-cta" onclick="confirm('Confirmar asistencia al Tour Gastronómico Thermomix?') && alert('Asistencia confirmada. Nos vemos el 21 de Abril.')">
+                Confirmar asistencia
+            </button>
+
+            <div class="inv-footer">
+                Thermomix México
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Tour Gastronómico Thermomix - León 2026 | Foro 7 Producciones</p>
+    </footer>
+
+</body>
+</html>

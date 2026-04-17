@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contrato - Tour Gastronómico Thermomix</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: #0a0a0a;
+            color: #f5f5f5;
+            min-height: 100vh;
+        }
+        nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 2rem;
+            background: #111;
+            border-bottom: 1px solid #222;
+        }
+        nav a { color: #00b894; text-decoration: none; font-size: 0.9rem; }
+        nav .title { color: #fff; font-weight: 600; }
+
+        .container { max-width: 800px; margin: 0 auto; padding: 2rem 1.5rem; }
+        h1 { font-size: 1.8rem; margin-bottom: 0.5rem; }
+        .desc { color: #888; margin-bottom: 2rem; }
+
+        .contract {
+            background: #141414;
+            border: 1px solid #2a2a2a;
+            border-radius: 16px;
+            padding: 2.5rem;
+            line-height: 1.8;
+        }
+        .contract h2 {
+            font-size: 1.2rem;
+            color: #00b894;
+            margin: 1.5rem 0 0.8rem;
+            padding-top: 1rem;
+            border-top: 1px solid #222;
+        }
+        .contract h2:first-child { border-top: none; margin-top: 0; padding-top: 0; }
+        .contract p { color: #ccc; margin-bottom: 0.8rem; }
+        .contract ul { padding-left: 1.5rem; color: #ccc; margin-bottom: 0.8rem; }
+        .contract li { margin-bottom: 0.4rem; }
+        .contract .highlight { color: #00b894; font-weight: 600; }
+
+        .signatures {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 2.5rem;
+            padding-top: 2rem;
+            border-top: 1px solid #333;
+        }
+        .sig-box {
+            text-align: center;
+        }
+        .sig-line {
+            border-top: 1px solid #555;
+            margin-top: 4rem;
+            padding-top: 0.5rem;
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        .actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+        .btn {
+            padding: 0.7rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.9rem;
+            border: none;
+            transition: opacity 0.3s;
+        }
+        .btn:hover { opacity: 0.85; }
+        .btn-primary { background: #00b894; color: #000; }
+        .btn-outline { background: transparent; border: 1px solid #333; color: #f5f5f5; }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            border-top: 1px solid #1a1a1a;
+            color: #555;
+            font-size: 0.85rem;
+        }
+
+        @media print {
+            body { background: #fff; color: #000; }
+            nav, .actions, footer { display: none; }
+            .contract { background: #fff; border: none; }
+            .contract p, .contract ul, .contract li { color: #333; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="fotografo.html">&larr; Panel Fotógrafo</a>
+        <span class="title">Contrato de Servicio</span>
+        <span></span>
+    </nav>
+
+    <div class="container">
+        <h1>&#128221; Contrato de Servicio</h1>
+        <p class="desc">Acuerdo de servicio de fotografía y video para el Tour Gastronómico Thermomix</p>
+
+        <div class="contract">
+            <h2>1. Partes</h2>
+            <p><strong>Prestador del servicio:</strong> Arturo Cruz Armenta - Foro 7 Producciones</p>
+            <p><strong>Cliente:</strong> Thermomix México - Christiane (Representante)</p>
+
+            <h2>2. Descripción del servicio</h2>
+            <p>Cobertura de fotografía y video del evento <span class="highlight">Tour Gastronómico Thermomix</span> a realizarse el <span class="highlight">martes 21 de abril de 2026</span> en el Cooking Studio de León, Guanajuato.</p>
+            <p>Duración estimada de cobertura: 5-6 horas (dos sesiones).</p>
+
+            <h2>3. Entregables</h2>
+            <ul>
+                <li>Aproximadamente 500 fotografías sin editar (entrega el mismo día vía web privada)</li>
+                <li><span class="highlight">15 a 20 fotografías editadas</span> seleccionadas por el cliente</li>
+                <li>Video completo del evento (enlace al día siguiente)</li>
+                <li>Video resumen / highlight con música</li>
+                <li>Tomas adicionales de dron 4K</li>
+                <li>Opción de entrega en USB adicional</li>
+            </ul>
+
+            <h2>4. Tiempos de entrega</h2>
+            <ul>
+                <li><strong>Fotos sin editar:</strong> Mismo día del evento</li>
+                <li><strong>Video completo + highlight:</strong> Día siguiente (22 de abril)</li>
+                <li><strong>Fotos editadas:</strong> 3-5 días hábiles tras la selección del cliente</li>
+            </ul>
+
+            <h2>5. Inversión</h2>
+            <p>El costo total del servicio es de <span class="highlight">$6,000.00 MXN + IVA</span>.</p>
+            <p>Forma de pago: transferencia bancaria.</p>
+            <p>Fecha de pago: <span class="highlight">Viernes 24 de abril de 2026</span>.</p>
+
+            <h2>6. Uso del material</h2>
+            <p>El material fotográfico y de video podrá ser utilizado por Thermomix México para redes sociales, presentaciones internas y material promocional.</p>
+            <p>Foro 7 Producciones se reserva el derecho de incluir el material en su portafolio profesional.</p>
+
+            <h2>7. Cancelación</h2>
+            <p>En caso de cancelación con menos de 48 horas de anticipación, se cobrará el 50% del costo total como penalización.</p>
+
+            <div class="signatures">
+                <div class="sig-box">
+                    <div class="sig-line">Arturo Cruz Armenta<br>Foro 7 Producciones</div>
+                </div>
+                <div class="sig-box">
+                    <div class="sig-line">Christiane<br>Thermomix México</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="actions">
+            <button class="btn btn-primary" onclick="window.print()">&#128424; Imprimir / PDF</button>
+            <button class="btn btn-outline" onclick="history.back()">Volver</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>Tour Gastronómico Thermomix - León 2026 | Foro 7 Producciones</p>
+    </footer>
+
+</body>
+</html>

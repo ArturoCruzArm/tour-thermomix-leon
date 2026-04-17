@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selector de Fotos - Tour Gastronómico Thermomix</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: #0a0a0a;
+            color: #f5f5f5;
+            min-height: 100vh;
+        }
+        nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 2rem;
+            background: #111;
+            border-bottom: 1px solid #222;
+        }
+        nav a { color: #00b894; text-decoration: none; font-size: 0.9rem; }
+        nav a:hover { text-decoration: underline; }
+        nav .title { color: #fff; font-weight: 600; font-size: 1rem; }
+
+        .container { max-width: 1000px; margin: 0 auto; padding: 2rem 1.5rem; }
+
+        h1 { font-size: 1.8rem; margin-bottom: 0.5rem; }
+        .desc { color: #888; margin-bottom: 2rem; }
+
+        /* Upload zone */
+        .upload-zone {
+            border: 2px dashed #333;
+            border-radius: 16px;
+            padding: 3rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            transition: border-color 0.3s;
+            cursor: pointer;
+        }
+        .upload-zone:hover, .upload-zone.dragover { border-color: #00b894; }
+        .upload-zone .icon { font-size: 3rem; margin-bottom: 1rem; }
+        .upload-zone p { color: #888; }
+        .upload-zone input { display: none; }
+
+        /* Gallery */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        .photo-item {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #141414;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s;
+            aspect-ratio: 4/3;
+        }
+        .photo-item:hover { border-color: #00b894; }
+        .photo-item.selected { border-color: #00b894; }
+        .photo-item.selected::after {
+            content: '\2713';
+            position: absolute;
+            top: 8px; right: 8px;
+            background: #00b894;
+            color: #000;
+            width: 28px; height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+        .photo-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .photo-item .placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: #555;
+            font-size: 0.85rem;
+        }
+
+        /* Toolbar */
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .count { color: #00b894; font-weight: 600; }
+        .btn {
+            background: #00b894;
+            color: #000;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: opacity 0.3s;
+        }
+        .btn:hover { opacity: 0.85; }
+        .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #333;
+            color: #f5f5f5;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #555;
+        }
+        .empty-state .icon { font-size: 4rem; margin-bottom: 1rem; }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            border-top: 1px solid #1a1a1a;
+            color: #555;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="fotografo.html">&larr; Panel Fotógrafo</a>
+        <span class="title">Selector de Fotos</span>
+        <span></span>
+    </nav>
+
+    <div class="container">
+        <h1>&#128247; Galería del Evento</h1>
+        <p class="desc">Selecciona las fotos que deseas para edición. Se entregarán 15-20 fotos editadas.</p>
+
+        <!-- Upload -->
+        <div class="upload-zone" id="uploadZone">
+            <div class="icon">&#128228;</div>
+            <p><strong>Arrastra fotos aquí</strong> o haz clic para subir</p>
+            <p style="font-size:0.8rem; margin-top:0.5rem;">JPG, PNG, WebP - Máximo 20MB por foto</p>
+            <input type="file" id="fileInput" multiple accept="image/*">
+        </div>
+
+        <!-- Toolbar -->
+        <div class="toolbar">
+            <span class="count"><span id="selectedCount">0</span> fotos seleccionadas de <span id="totalCount">0</span></span>
+            <div style="display:flex; gap:0.5rem;">
+                <button class="btn btn-outline" id="btnSelectAll">Seleccionar todas</button>
+                <button class="btn" id="btnDownload" disabled>Descargar seleccionadas</button>
+            </div>
+        </div>
+
+        <!-- Gallery -->
+        <div class="gallery" id="gallery">
+            <div class="empty-state" style="grid-column: 1/-1;">
+                <div class="icon">&#128247;</div>
+                <p>Las fotos del evento aparecerán aquí después del 21 de Abril</p>
+                <p style="margin-top:0.5rem; font-size:0.85rem;">Sube fotos o espera a que se publiquen</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Tour Gastronómico Thermomix - León 2026 | Foro 7 Producciones</p>
+    </footer>
+
+    <script>
+        const gallery = document.getElementById('gallery');
+        const uploadZone = document.getElementById('uploadZone');
+        const fileInput = document.getElementById('fileInput');
+        const selectedCount = document.getElementById('selectedCount');
+        const totalCount = document.getElementById('totalCount');
+        const btnDownload = document.getElementById('btnDownload');
+        const btnSelectAll = document.getElementById('btnSelectAll');
+        let photos = [];
+
+        uploadZone.addEventListener('click', () => fileInput.click());
+        uploadZone.addEventListener('dragover', (e) => { e.preventDefault(); uploadZone.classList.add('dragover'); });
+        uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('dragover'));
+        uploadZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadZone.classList.remove('dragover');
+            handleFiles(e.dataTransfer.files);
+        });
+        fileInput.addEventListener('change', (e) => handleFiles(e.target.files));
+
+        function handleFiles(files) {
+            const emptyState = gallery.querySelector('.empty-state');
+            if (emptyState) emptyState.remove();
+
+            Array.from(files).forEach(file => {
+                if (!file.type.startsWith('image/')) return;
+                const url = URL.createObjectURL(file);
+                const id = photos.length;
+                photos.push({ file, url, selected: false });
+
+                const div = document.createElement('div');
+                div.className = 'photo-item';
+                div.dataset.id = id;
+                div.innerHTML = `<img src="${url}" alt="${file.name}">`;
+                div.addEventListener('click', () => toggleSelect(div, id));
+                gallery.appendChild(div);
+            });
+            updateCounts();
+        }
+
+        function toggleSelect(el, id) {
+            photos[id].selected = !photos[id].selected;
+            el.classList.toggle('selected');
+            updateCounts();
+        }
+
+        function updateCounts() {
+            const sel = photos.filter(p => p.selected).length;
+            selectedCount.textContent = sel;
+            totalCount.textContent = photos.length;
+            btnDownload.disabled = sel === 0;
+        }
+
+        btnSelectAll.addEventListener('click', () => {
+            const allSelected = photos.every(p => p.selected);
+            photos.forEach((p, i) => {
+                p.selected = !allSelected;
+                const el = gallery.querySelector(`[data-id="${i}"]`);
+                if (el) el.classList.toggle('selected', !allSelected);
+            });
+            updateCounts();
+        });
+
+        btnDownload.addEventListener('click', () => {
+            photos.filter(p => p.selected).forEach(p => {
+                const a = document.createElement('a');
+                a.href = p.url;
+                a.download = p.file.name;
+                a.click();
+            });
+        });
+    </script>
+</body>
+</html>

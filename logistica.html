@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logística - Tour Gastronómico Thermomix</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: #0a0a0a;
+            color: #f5f5f5;
+            min-height: 100vh;
+        }
+        nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 2rem;
+            background: #111;
+            border-bottom: 1px solid #222;
+        }
+        nav a { color: #00b894; text-decoration: none; font-size: 0.9rem; }
+        nav .title { color: #fff; font-weight: 600; }
+
+        .container { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem; }
+        h1 { font-size: 1.8rem; margin-bottom: 0.5rem; }
+        .desc { color: #888; margin-bottom: 2rem; }
+
+        .section {
+            background: #141414;
+            border: 1px solid #2a2a2a;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+        }
+        .section h2 {
+            font-size: 1.1rem;
+            color: #00b894;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #2a2a2a;
+        }
+        .timeline-item {
+            position: relative;
+            padding-bottom: 1.5rem;
+        }
+        .timeline-item:last-child { padding-bottom: 0; }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2rem;
+            top: 6px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #00b894;
+            border: 2px solid #0a0a0a;
+        }
+        .timeline-item .time {
+            font-size: 0.85rem;
+            color: #00b894;
+            font-weight: 600;
+            margin-bottom: 0.2rem;
+        }
+        .timeline-item p { color: #ccc; font-size: 0.95rem; }
+
+        .equip-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        .equip-item {
+            background: #1a1a1a;
+            border-radius: 12px;
+            padding: 1.2rem;
+            text-align: center;
+        }
+        .equip-item .icon { font-size: 2rem; margin-bottom: 0.5rem; }
+        .equip-item h4 { font-size: 0.9rem; margin-bottom: 0.3rem; }
+        .equip-item p { color: #888; font-size: 0.8rem; }
+
+        .checklist { list-style: none; }
+        .checklist li {
+            padding: 0.6rem 0;
+            border-bottom: 1px solid #1e1e1e;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            color: #ccc;
+        }
+        .checklist li:last-child { border-bottom: none; }
+        .checklist .check {
+            width: 22px;
+            height: 22px;
+            border: 2px solid #333;
+            border-radius: 6px;
+            flex-shrink: 0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        .checklist .check.done {
+            background: #00b894;
+            border-color: #00b894;
+            color: #000;
+        }
+
+        .notes {
+            background: #1a1a1a;
+            border-radius: 12px;
+            padding: 1rem;
+            color: #aaa;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        .notes strong { color: #00b894; }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            border-top: 1px solid #1a1a1a;
+            color: #555;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="fotografo.html">&larr; Panel Fotógrafo</a>
+        <span class="title">Logística</span>
+        <span></span>
+    </nav>
+
+    <div class="container">
+        <h1>&#128666; Logística del evento</h1>
+        <p class="desc">Coordinación, equipo y tiempos para la cobertura del Tour Gastronómico</p>
+
+        <!-- Timeline -->
+        <div class="section">
+            <h2>&#128197; Cronograma del día</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="time">10:00 - Llegada y setup</div>
+                    <p>Instalación de equipo, reconocimiento del espacio, pruebas de iluminación</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="time">10:30 - Tomas de ambientación</div>
+                    <p>Fotos del espacio, ingredientes, montaje de estaciones de cocina</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="time">11:00 - Sesión 1: Tour Gastronómico</div>
+                    <p>Cobertura completa de la primera sesión (~30 participantes)</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="time">~14:00 - Pausa / Cambio de grupo</div>
+                    <p>Respaldo de tarjetas, cambio de baterías, revisión de material</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="time">17:00 - Sesión 2: Tour Gastronómico</div>
+                    <p>Cobertura completa de la segunda sesión</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="time">~20:00 - Cierre y desmontaje</div>
+                    <p>Tomas finales, empaque de equipo</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="time">Mismo día - Entrega de fotos sin editar</div>
+                    <p>~500 fotos disponibles en galería web privada para selección</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="time">22 de Abril - Entrega de video</div>
+                    <p>Video completo + highlight con música vía enlace</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Equipo -->
+        <div class="section">
+            <h2>&#127909; Equipo</h2>
+            <div class="equip-grid">
+                <div class="equip-item">
+                    <div class="icon">&#128247;</div>
+                    <h4>Cámara principal</h4>
+                    <p>Fotografía + video</p>
+                </div>
+                <div class="equip-item">
+                    <div class="icon">&#127916;</div>
+                    <h4>Cámara secundaria</h4>
+                    <p>Video continuo</p>
+                </div>
+                <div class="equip-item">
+                    <div class="icon">&#128681;</div>
+                    <h4>Dron 4K</h4>
+                    <p>Tomas aéreas del espacio</p>
+                </div>
+                <div class="equip-item">
+                    <div class="icon">&#128161;</div>
+                    <h4>Iluminación</h4>
+                    <p>Flash + luces continuas</p>
+                </div>
+                <div class="equip-item">
+                    <div class="icon">&#127908;</div>
+                    <h4>Audio</h4>
+                    <p>Micrófono para ambiente</p>
+                </div>
+                <div class="equip-item">
+                    <div class="icon">&#128187;</div>
+                    <h4>Laptop</h4>
+                    <p>Respaldo y entrega rápida</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Checklist -->
+        <div class="section">
+            <h2>&#9989; Checklist pre-evento</h2>
+            <ul class="checklist" id="checklist">
+                <li><div class="check" onclick="this.classList.toggle('done')"></div> Cargar baterías de cámaras y dron</li>
+                <li><div class="check" onclick="this.classList.toggle('done')"></div> Formatear tarjetas de memoria</li>
+                <li><div class="check" onclick="this.classList.toggle('done')"></div> Verificar equipo de iluminación</li>
+                <li><div class="check" onclick="this.classList.toggle('done')"></div> Empacar trípode y estabilizador</li>
+                <li><div class="check" onclick="this.classList.toggle('done')"></div> Confirmar dirección del Cooking Studio</li>
+                <li><div class="check" onclick="this.classList.toggle('done')"></div> Revisar guía de fotografía de Thermomix</li>
+                <li><div class="check" onclick="this.classList.toggle('done')"></div> Preparar USB para entrega adicional</li>
+                <li><div class="check" onclick="this.classList.toggle('done')"></div> Descargar video de referencia GDL</li>
+                <li><div class="check" onclick="this.classList.toggle('done')"></div> Confirmar horario con Christiane</li>
+            </ul>
+        </div>
+
+        <!-- Notas -->
+        <div class="section">
+            <h2>&#128221; Notas importantes</h2>
+            <div class="notes">
+                <p><strong>Formato de fotos para redes:</strong> Instagram, LinkedIn, WhatsApp interno</p>
+                <p><strong>Video:</strong> Horizontal para juntas + highlight con música (sin narración)</p>
+                <p><strong>Contacto en sitio:</strong> Christiane (+52 1 55 7986 9614)</p>
+                <p><strong>Equipo Thermomix en grupo:</strong> Ame (fotos del estudio), más representantes de SLP y CDMX</p>
+                <p><strong>Referencia:</strong> Video del tour anterior en Guadalajara disponible como guía</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Tour Gastronómico Thermomix - León 2026 | Foro 7 Producciones</p>
+    </footer>
+
+</body>
+</html>

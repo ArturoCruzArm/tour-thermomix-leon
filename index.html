@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tour Gastronómico Thermomix - León 2026</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: #0a0a0a;
+            color: #f5f5f5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            padding: 3rem 1.5rem;
+            text-align: center;
+            border-bottom: 3px solid #00b894;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle at 30% 50%, rgba(0, 184, 148, 0.08) 0%, transparent 50%);
+            animation: pulse 8s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        .hero-content { position: relative; z-index: 1; }
+        .logo-badge {
+            display: inline-block;
+            background: rgba(0, 184, 148, 0.15);
+            border: 1px solid rgba(0, 184, 148, 0.3);
+            border-radius: 50px;
+            padding: 0.4rem 1.2rem;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #00b894;
+            margin-bottom: 1rem;
+        }
+        .hero h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(90deg, #fff, #00b894);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero .subtitle {
+            font-size: 1.1rem;
+            color: #a0a0a0;
+            margin-bottom: 1.5rem;
+        }
+        .hero .date-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(0, 184, 148, 0.2);
+            border: 1px solid #00b894;
+            border-radius: 12px;
+            padding: 0.8rem 1.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #00b894;
+        }
+
+        /* Portal Selector */
+        .portal-section {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem 1.5rem;
+        }
+        .portal-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            max-width: 750px;
+            width: 100%;
+        }
+        .portal-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            background: #141414;
+            border: 2px solid #2a2a2a;
+            border-radius: 24px;
+            padding: 3rem 2rem;
+            text-decoration: none;
+            color: #f5f5f5;
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+        .portal-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+        .portal-card.fotografo::before {
+            background: linear-gradient(135deg, transparent 40%, rgba(0, 184, 148, 0.08));
+        }
+        .portal-card.asistentes::before {
+            background: linear-gradient(135deg, transparent 40%, rgba(108, 92, 231, 0.08));
+        }
+        .portal-card:hover::before { opacity: 1; }
+        .portal-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+        }
+        .portal-card.fotografo:hover { border-color: #00b894; }
+        .portal-card.asistentes:hover { border-color: #6c5ce7; }
+
+        .portal-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+        }
+        .portal-card h2 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .portal-card .portal-desc {
+            font-size: 0.9rem;
+            color: #888;
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+        .portal-links {
+            list-style: none;
+            width: 100%;
+            text-align: left;
+        }
+        .portal-links li {
+            padding: 0.5rem 0;
+            border-top: 1px solid #1e1e1e;
+            font-size: 0.85rem;
+            color: #aaa;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .portal-links li span { font-size: 1rem; }
+        .portal-enter {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+            padding: 0.7rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+        .portal-card.fotografo .portal-enter {
+            background: #00b894;
+            color: #000;
+        }
+        .portal-card.asistentes .portal-enter {
+            background: #6c5ce7;
+            color: #fff;
+        }
+        .portal-enter:hover { transform: scale(1.05); }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            border-top: 1px solid #1a1a1a;
+            color: #555;
+            font-size: 0.85rem;
+        }
+        footer a { color: #00b894; text-decoration: none; }
+
+        @media (max-width: 600px) {
+            .hero h1 { font-size: 1.6rem; }
+            .portal-grid { grid-template-columns: 1fr; }
+            .portal-card { padding: 2rem 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="hero">
+        <div class="hero-content">
+            <div class="logo-badge">Foro 7 Producciones</div>
+            <h1>Tour Gastronómico Thermomix</h1>
+            <p class="subtitle">León, Guanajuato</p>
+            <div class="date-badge">
+                <span>&#128197;</span>
+                Martes 21 de Abril, 2026
+            </div>
+        </div>
+    </header>
+
+    <section class="portal-section">
+        <div class="portal-grid">
+
+            <!-- Fotógrafo -->
+            <a href="fotografo.html" class="portal-card fotografo">
+                <div class="portal-icon">&#128247;</div>
+                <h2>Fotógrafo</h2>
+                <p class="portal-desc">Panel de trabajo: logística, contrato, equipo y selector de fotos</p>
+                <ul class="portal-links">
+                    <li><span>&#128666;</span> Logística y cronograma</li>
+                    <li><span>&#128221;</span> Contrato de servicio</li>
+                    <li><span>&#127909;</span> Selector de fotos</li>
+                </ul>
+                <div class="portal-enter">Entrar &rarr;</div>
+            </a>
+
+            <!-- Asistentes -->
+            <a href="asistentes.html" class="portal-card asistentes">
+                <div class="portal-icon">&#127860;</div>
+                <h2>Asistentes</h2>
+                <p class="portal-desc">Información del evento, invitación y galería de fotos</p>
+                <ul class="portal-links">
+                    <li><span>&#9993;</span> Invitación al evento</li>
+                    <li><span>&#128197;</span> Horarios y ubicación</li>
+                    <li><span>&#128247;</span> Galería de fotos</li>
+                </ul>
+                <div class="portal-enter">Entrar &rarr;</div>
+            </a>
+
+        </div>
+    </section>
+
+    <footer>
+        <p>Arturo Cruz | <a href="https://foro7.invitados.org">Foro 7 Producciones</a></p>
+    </footer>
+
+</body>
+</html>
