@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Itinerario 21 Abril - Tour Gastronómico Thermomix</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: #0a0a0a;
+            color: #f5f5f5;
+            min-height: 100vh;
+            padding-bottom: 80px;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #1a1a2e, #0f3460);
+            padding: 1.5rem;
+            text-align: center;
+            border-bottom: 3px solid #00b894;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .header h1 { font-size: 1.2rem; color: #00b894; }
+        .header p { font-size: 0.85rem; color: #aaa; margin-top: 0.3rem; }
+        .header .fecha { color: #fff; font-weight: 700; font-size: 1rem; margin-top: 0.3rem; }
+
+        /* Clock */
+        .clock-bar {
+            background: #111;
+            padding: 0.6rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 82px;
+            z-index: 99;
+            border-bottom: 1px solid #222;
+        }
+        .clock { font-size: 1.4rem; font-weight: 700; color: #00b894; font-variant-numeric: tabular-nums; }
+        .next-up { font-size: 0.8rem; color: #ffd93d; }
+
+        /* Container */
+        .container { max-width: 700px; margin: 0 auto; padding: 1rem; }
+
+        /* Phase header */
+        .phase {
+            background: linear-gradient(135deg, #00b894, #00a884);
+            color: #000;
+            padding: 0.8rem 1.2rem;
+            border-radius: 12px 12px 0 0;
+            margin-top: 1.5rem;
+            font-weight: 700;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .phase.pausa { background: linear-gradient(135deg, #ffd93d, #f0c929); }
+        .phase.sesion2 { background: linear-gradient(135deg, #6c5ce7, #a29bfe); color: #fff; }
+        .phase.cierre { background: linear-gradient(135deg, #fd79a8, #e84393); color: #fff; }
+        .phase.post { background: linear-gradient(135deg, #74b9ff, #0984e3); color: #fff; }
+
+        /* Time block */
+        .block {
+            background: #141414;
+            border: 1px solid #2a2a2a;
+            border-top: none;
+            padding: 1rem 1.2rem;
+        }
+        .block:last-of-type {
+            border-radius: 0 0 12px 12px;
+            margin-bottom: 0.5rem;
+        }
+        .block-time {
+            font-size: 0.8rem;
+            color: #00b894;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.4rem;
+        }
+        .block h3 {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        .block ul {
+            list-style: none;
+            padding: 0;
+        }
+        .block ul li {
+            padding: 0.35rem 0;
+            padding-left: 1.2rem;
+            position: relative;
+            color: #ccc;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+        .block ul li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.65rem;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #00b894;
+        }
+        .block .tip {
+            background: rgba(0, 184, 148, 0.1);
+            border-left: 3px solid #00b894;
+            padding: 0.5rem 0.8rem;
+            margin-top: 0.5rem;
+            font-size: 0.82rem;
+            color: #aaa;
+            border-radius: 0 8px 8px 0;
+        }
+        .block .warn {
+            background: rgba(255, 217, 61, 0.1);
+            border-left: 3px solid #ffd93d;
+            padding: 0.5rem 0.8rem;
+            margin-top: 0.5rem;
+            font-size: 0.82rem;
+            color: #ffd93d;
+            border-radius: 0 8px 8px 0;
+        }
+
+        /* Checklist items */
+        .check-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.6rem;
+            padding: 0.4rem 0;
+            color: #ccc;
+            font-size: 0.9rem;
+        }
+        .check-box {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #333;
+            border-radius: 5px;
+            flex-shrink: 0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 1px;
+            transition: all 0.2s;
+        }
+        .check-box.done {
+            background: #00b894;
+            border-color: #00b894;
+            color: #000;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+        .check-item.done-item { text-decoration: line-through; color: #555; }
+
+        /* Contact bar */
+        .contact-float {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #111;
+            border-top: 2px solid #00b894;
+            padding: 0.6rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 200;
+        }
+        .contact-float a {
+            background: #00b894;
+            color: #000;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+        .contact-float .name { color: #ccc; font-size: 0.85rem; }
+
+        /* Shot list */
+        .shot-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        .shot-item {
+            background: #1a1a1a;
+            border-radius: 8px;
+            padding: 0.5rem 0.7rem;
+            font-size: 0.82rem;
+            color: #ccc;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .shot-item .emoji { font-size: 1rem; }
+
+        /* Divider */
+        .divider {
+            text-align: center;
+            color: #333;
+            margin: 1rem 0;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>Tour Gastronomico Thermomix</h1>
+        <p>Cooking Studio - Leon, Guanajuato</p>
+        <div class="fecha">Martes 21 de Abril 2026</div>
+    </div>
+
+    <div class="clock-bar">
+        <div class="clock" id="reloj">--:--:--</div>
+        <div class="next-up" id="nextUp">Cargando...</div>
+    </div>
+
+    <div class="container">
+
+        <!-- ============================================ -->
+        <!-- FASE 1: PREPARACION EN CASA -->
+        <!-- ============================================ -->
+        <div class="phase">Preparacion en casa</div>
+
+        <div class="block">
+            <div class="block-time">08:00 - 08:30</div>
+            <h3>Revision de equipo antes de salir</h3>
+            <div class="check-item" onclick="toggleCheck(this)">
+                <div class="check-box"></div>
+                <span>Camara principal cargada + tarjeta formateada</span>
+            </div>
+            <div class="check-item" onclick="toggleCheck(this)">
+                <div class="check-box"></div>
+                <span>Camara secundaria (video continuo) cargada</span>
+            </div>
+            <div class="check-item" onclick="toggleCheck(this)">
+                <div class="check-box"></div>
+                <span>Dron cargado (3 baterias) + tarjeta</span>
+            </div>
+            <div class="check-item" onclick="toggleCheck(this)">
+                <div class="check-box"></div>
+                <span>Flash + baterias de repuesto</span>
+            </div>
+            <div class="check-item" onclick="toggleCheck(this)">
+                <div class="check-box"></div>
+                <span>Luces continuas + soportes</span>
+            </div>
+            <div class="check-item" onclick="toggleCheck(this)">
+                <div class="check-box"></div>
+                <span>Tripode y estabilizador</span>
+            </div>
+            <div class="check-item" onclick="toggleCheck(this)">
+                <div class="check-box"></div>
+                <span>Microfono para ambiente</span>
+            </div>
+            <div class="check-item" onclick="toggleCheck(this)">
+                <div class="check-box"></div>
+                <span>Laptop + cargador + cable USB/lector de tarjetas</span>
+            </div>
+            <div class="check-item" onclick="toggleCheck(this)">
+                <div class="check-box"></div>
+                <span>Tarjetas de memoria extra (al menos 2)</span>
+            </div>
+            <div class="check-item" onclick="toggleCheck(this)">
+                <div class="check-box"></div>
+                <span>USB para entrega adicional</span>
+            </div>
+            <div class="check-item" onclick="toggleCheck(this)">
+                <div class="check-box"></div>
+                <span>Extensiones electricas / multicontacto</span>
+            </div>
+            <div class="check-item" onclick="toggleCheck(this)">
+                <div class="check-box"></div>
+                <span>Ropa comoda y oscura (staff)</span>
+            </div>
+            <div class="tip">Lleva cinta gaffer para fijar cables en el piso del estudio. Tambien botellas de agua.</div>
+        </div>
+
+        <div class="block">
+            <div class="block-time">08:30 - 09:00</div>
+            <h3>Traslado a Leon</h3>
+            <ul>
+                <li>Verificar ruta y tiempo estimado de llegada</li>
+                <li>Confirmar direccion exacta del Cooking Studio con Christiane si no la tienes</li>
+                <li>Llegar minimo 1 hora antes de la sesion 1</li>
+            </ul>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- FASE 2: LLEGADA Y SETUP -->
+        <!-- ============================================ -->
+        <div class="phase">Llegada y montaje</div>
+
+        <div class="block">
+            <div class="block-time">09:30 - 10:00</div>
+            <h3>Llegada al Cooking Studio</h3>
+            <ul>
+                <li>Presentarte con Christiane y el equipo Thermomix</li>
+                <li>Preguntar: zonas restringidas, donde NO colocar equipo, accesos</li>
+                <li>Identificar tomas de corriente disponibles</li>
+                <li>Recorrer TODO el espacio: cocina, area de Q&A, entrada, exteriores</li>
+                <li>Identificar la mejor posicion para dron (si es exterior o tiene techo alto)</li>
+            </ul>
+            <div class="tip">Pregunta a Christiane el flujo exacto del evento: por donde entran los participantes, donde cocinan, donde se sientan para Q&A, y si hay momentos de "foto grupal" o "foto con platillo".</div>
+        </div>
+
+        <div class="block">
+            <div class="block-time">10:00 - 10:30</div>
+            <h3>Montaje de equipo</h3>
+            <ul>
+                <li>Montar camara de video continuo en tripode (angulo abierto que cubra la cocina)</li>
+                <li>Probar iluminacion: flash rebotado vs luz continua vs luz natural del estudio</li>
+                <li>Ajustar balance de blancos manualmente (la cocina tiene luces calidas)</li>
+                <li>Hacer tomas de prueba de los mesones, estufas, ingredientes</li>
+                <li>Colocar microfono de ambiente cerca de la zona de presentacion</li>
+                <li>Fijar cables con cinta en zonas de paso</li>
+            </ul>
+            <div class="warn">Si hay ventanas grandes, prueba la exposicion contraluz. Ajusta ISO/apertura para que las caras no queden oscuras contra la ventana.</div>
+        </div>
+
+        <div class="block">
+            <div class="block-time">10:30 - 11:00</div>
+            <h3>Tomas de ambientacion (B-roll)</h3>
+            <p style="color:#aaa; margin-bottom:0.5rem;">Estas tomas son CLAVE para el highlight. Hazlas antes de que llegue la gente.</p>
+            <div class="shot-grid">
+                <div class="shot-item"><span class="emoji">🏪</span> Fachada del estudio</div>
+                <div class="shot-item"><span class="emoji">🍳</span> Estaciones de cocina</div>
+                <div class="shot-item"><span class="emoji">🥕</span> Ingredientes en close-up</div>
+                <div class="shot-item"><span class="emoji">🔪</span> Utensilios y Thermomix</div>
+                <div class="shot-item"><span class="emoji">🪑</span> Montaje de mesas/sillas</div>
+                <div class="shot-item"><span class="emoji">📋</span> Branding/logos Thermomix</div>
+                <div class="shot-item"><span class="emoji">🎨</span> Detalles decorativos</div>
+                <div class="shot-item"><span class="emoji">📺</span> Pantallas/presentacion</div>
+            </div>
+            <div class="tip">Usa lente abierto (35mm o 50mm f/1.8) para los close-ups de ingredientes con fondo desenfocado. Son las fotos que mas usan para redes.</div>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- FASE 3: SESION 1 -->
+        <!-- ============================================ -->
+        <div class="phase">Sesion 1 - Tour Gastronomico</div>
+
+        <div class="block">
+            <div class="block-time">11:00 - 11:15</div>
+            <h3>Llegada de participantes (~30 personas)</h3>
+            <ul>
+                <li>Fotos de la llegada: gente entrando, saludandose, caras de emocion</li>
+                <li>Tomas de registro/check-in si lo hay</li>
+                <li>Foto del grupo completo al inicio (pedirla antes de que se dispersen)</li>
+                <li>Video: grabar saludo de bienvenida del anfitrion</li>
+            </ul>
+            <div class="warn">La foto grupal al inicio es MUCHO mas facil que al final. La gente esta fresca y coopera. Pidela ahora.</div>
+        </div>
+
+        <div class="block">
+            <div class="block-time">11:15 - 12:00</div>
+            <h3>Demostracion / Clase de cocina</h3>
+            <ul>
+                <li>Posicionate donde veas las manos del chef + las caras de los participantes</li>
+                <li>Alterna: plano abierto del grupo, medio del chef, close-up de manos/comida</li>
+                <li>Captura reacciones: risas, sorpresa, concentracion</li>
+                <li>Captura la Thermomix en accion (momento clave para la marca)</li>
+                <li>Video continuo corriendo en tripode + tu disparando fotos</li>
+            </ul>
+            <div class="tip">Cada 10-15 minutos cambia de angulo fisicamente. No te quedes en un solo spot. Muevete a los lados y detras de los participantes para variedad.</div>
+        </div>
+
+        <div class="block">
+            <div class="block-time">12:00 - 13:00</div>
+            <h3>Participantes cocinando</h3>
+            <ul>
+                <li>Recorre TODAS las estaciones, no te quedes en una</li>
+                <li>Fotos de cada equipo/mesa trabajando (3-5 fotos por mesa)</li>
+                <li>Close-ups: manos cortando, mezclando, sirviendo</li>
+                <li>Interacciones entre participantes (fotos candidas)</li>
+                <li>El momento de probar la comida: caras de satisfaccion</li>
+                <li>Si alguien hace algo gracioso o se ensucia, capturalo (contenido genuino)</li>
+            </ul>
+        </div>
+
+        <div class="block">
+            <div class="block-time">13:00 - 13:30</div>
+            <h3>Platillos terminados + Cierre sesion 1</h3>
+            <ul>
+                <li>Fotos de los platillos terminados (cenital / 45 grados, fondo limpio)</li>
+                <li>Participantes mostrando sus platillos (retrato con platillo)</li>
+                <li>Si hay Q&A o presentacion final, grabar video</li>
+                <li>Foto grupal final de la sesion 1 (si no la tomaste al inicio)</li>
+                <li>Despedida del grupo</li>
+            </ul>
+            <div class="tip">Para foto de platillos: limpia el plato con servilleta, busca luz natural o tu luz continua. Angulo cenital (desde arriba) queda profesional.</div>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- FASE 4: PAUSA -->
+        <!-- ============================================ -->
+        <div class="phase pausa">Pausa entre sesiones</div>
+
+        <div class="block">
+            <div class="block-time">~13:30 - 14:30</div>
+            <h3>Respaldo y recarga</h3>
+            <div class="check-item" onclick="toggleCheck(this)">
+                <div class="check-box"></div>
+                <span>Respaldar tarjetas de AMBAS camaras a laptop</span>
+            </div>
+            <div class="check-item" onclick="toggleCheck(this)">
+                <div class="check-box"></div>
+                <span>Verificar que las fotos se ven bien (enfoque, exposicion)</span>
+            </div>
+            <div class="check-item" onclick="toggleCheck(this)">
+                <div class="check-box"></div>
+                <span>Formatear tarjetas para sesion 2</span>
+            </div>
+            <div class="check-item" onclick="toggleCheck(this)">
+                <div class="check-box"></div>
+                <span>Cambiar/cargar baterias de camaras</span>
+            </div>
+            <div class="check-item" onclick="toggleCheck(this)">
+                <div class="check-box"></div>
+                <span>Cargar bateria del dron si la usaste</span>
+            </div>
+            <div class="check-item" onclick="toggleCheck(this)">
+                <div class="check-box"></div>
+                <span>Revisar video continuo (audio ok, encuadre ok)</span>
+            </div>
+            <div class="check-item" onclick="toggleCheck(this)">
+                <div class="check-box"></div>
+                <span>Comer algo / hidratarte</span>
+            </div>
+            <div class="warn">NO formatees las tarjetas sin respaldar primero. Verifica en la laptop que los archivos abren correctamente antes de borrar.</div>
+        </div>
+
+        <div class="block">
+            <div class="block-time">14:30 - 15:00</div>
+            <h3>Seleccion rapida + Envio a Christiane (opcional)</h3>
+            <ul>
+                <li>Selecciona 5-10 fotos buenas de la sesion 1 en la laptop</li>
+                <li>Exporta rapido en JPG (1200px, calidad 80%) para WhatsApp</li>
+                <li>Envialas a Christiane para que las suba a redes inmediatamente</li>
+                <li>Esto demuestra profesionalismo y genera contenido en tiempo real</li>
+            </ul>
+            <div class="tip">Elige: 1 grupal, 1 close-up de platillo, 1 Thermomix en accion, 2-3 candidas con buenas expresiones. Ponles tu logo/watermark ligero si quieres.</div>
+        </div>
+
+        <div class="block">
+            <div class="block-time">15:00 - 16:30</div>
+            <h3>Tiempo muerto (si lo hay)</h3>
+            <ul>
+                <li>Aprovecha para tomas de dron del exterior si es posible</li>
+                <li>Revisa si la segunda sesion tiene algo diferente en el programa</li>
+                <li>Re-posiciona equipo si encontraste mejores angulos en sesion 1</li>
+                <li>Limpia tu area de trabajo</li>
+            </ul>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- FASE 5: SESION 2 -->
+        <!-- ============================================ -->
+        <div class="phase sesion2">Sesion 2 - Tour Gastronomico</div>
+
+        <div class="block">
+            <div class="block-time">16:30 - 17:00</div>
+            <h3>Preparacion para sesion 2</h3>
+            <ul>
+                <li>Verificar que camaras estan listas (bateria, tarjeta, settings)</li>
+                <li>Re-iniciar video continuo en tripode</li>
+                <li>Ajustar iluminacion (la luz natural cambia en la tarde, puede haber menos)</li>
+                <li>Prepara flash si la luz baja</li>
+            </ul>
+            <div class="warn">La luz de la tarde es diferente. Si a las 11am tenias buena luz natural, a las 5pm probablemente necesites mas flash o luces continuas. Ajusta ISO y revisa balance de blancos de nuevo.</div>
+        </div>
+
+        <div class="block">
+            <div class="block-time">17:00 - 17:15</div>
+            <h3>Llegada segundo grupo (~30 personas)</h3>
+            <ul>
+                <li>Misma dinamica: llegada, registro, foto grupal de inicio</li>
+                <li>Ya sabes que funciona: repite los angulos que salieron bien en sesion 1</li>
+                <li>Pero busca variedad: prueba encuadres nuevos que no hiciste antes</li>
+            </ul>
+        </div>
+
+        <div class="block">
+            <div class="block-time">17:15 - 19:00</div>
+            <h3>Cobertura completa sesion 2</h3>
+            <ul>
+                <li>Misma estructura: demostracion, cocina participativa, platillos finales</li>
+                <li>Aprovecha la experiencia de la sesion 1 para mejorar tomas</li>
+                <li>Angulos que funcionaron: replicalos. Los que no: descarta</li>
+                <li>No bajes la intensidad. Las segundas sesiones tienden a salir con menos fotos si te cansas</li>
+                <li>Close-ups de platillos al final igual que en sesion 1</li>
+            </ul>
+            <div class="tip">Si ves que en la sesion 1 te faltaron fotos de algo (ej: la marca Thermomix en primer plano, o retratos individuales), esta es tu oportunidad de completar.</div>
+        </div>
+
+        <div class="block">
+            <div class="block-time">19:00 - 19:30</div>
+            <h3>Cierre sesion 2</h3>
+            <ul>
+                <li>Foto grupal final</li>
+                <li>Fotos de platillos terminados</li>
+                <li>Tomas de la despedida</li>
+                <li>Si Christiane quiere foto con el equipo Thermomix, tomarla ahora</li>
+            </ul>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- FASE 6: CIERRE -->
+        <!-- ============================================ -->
+        <div class="phase cierre">Cierre y desmontaje</div>
+
+        <div class="block">
+            <div class="block-time">19:30 - 20:00</div>
+            <h3>Ultimas tomas + Desmontaje</h3>
+            <ul>
+                <li>Tomas del espacio ya vacio (before/after del estudio)</li>
+                <li>Tomas aereas con dron si no las hiciste antes (ultimas del dia)</li>
+                <li>Desmontar luces, tripode, microfono</li>
+                <li>Recoger cables, cinta, todo tu equipo</li>
+                <li>Verificar que no olvidas NADA en el estudio</li>
+            </ul>
+            <div class="check-item" onclick="toggleCheck(this)">
+                <div class="check-box"></div>
+                <span>Camara principal guardada</span>
+            </div>
+            <div class="check-item" onclick="toggleCheck(this)">
+                <div class="check-box"></div>
+                <span>Camara secundaria + tripode</span>
+            </div>
+            <div class="check-item" onclick="toggleCheck(this)">
+                <div class="check-box"></div>
+                <span>Dron + control + baterias</span>
+            </div>
+            <div class="check-item" onclick="toggleCheck(this)">
+                <div class="check-box"></div>
+                <span>Luces + soportes</span>
+            </div>
+            <div class="check-item" onclick="toggleCheck(this)">
+                <div class="check-box"></div>
+                <span>Microfono</span>
+            </div>
+            <div class="check-item" onclick="toggleCheck(this)">
+                <div class="check-box"></div>
+                <span>Laptop + cargador + cables</span>
+            </div>
+            <div class="check-item" onclick="toggleCheck(this)">
+                <div class="check-box"></div>
+                <span>Extensiones y multicontacto</span>
+            </div>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- FASE 7: POST-EVENTO -->
+        <!-- ============================================ -->
+        <div class="phase post">Post-evento (misma noche)</div>
+
+        <div class="block">
+            <div class="block-time">20:00 - 20:30</div>
+            <h3>Respaldo final</h3>
+            <div class="check-item" onclick="toggleCheck(this)">
+                <div class="check-box"></div>
+                <span>Respaldar TODAS las tarjetas de sesion 2 a laptop</span>
+            </div>
+            <div class="check-item" onclick="toggleCheck(this)">
+                <div class="check-box"></div>
+                <span>Verificar que nada se corrompio</span>
+            </div>
+            <div class="check-item" onclick="toggleCheck(this)">
+                <div class="check-box"></div>
+                <span>Copia de seguridad en disco externo o nube</span>
+            </div>
+        </div>
+
+        <div class="block">
+            <div class="block-time">20:30 - 22:00</div>
+            <h3>Entrega de fotos sin editar (mismo dia)</h3>
+            <ul>
+                <li>Organizar: crear carpetas Sesion1/ y Sesion2/</li>
+                <li>Eliminar fotos claramente malas (borrosas, ojos cerrados, repetidas obvias)</li>
+                <li>Exportar ~500 fotos en JPG de buena calidad</li>
+                <li>Subir a galeria web privada o plataforma de entrega</li>
+                <li>Enviar enlace a Christiane por WhatsApp</li>
+            </ul>
+            <div class="tip">El contrato dice "~500 fotos sin editar mismo dia". No necesitan estar perfectas, pero elimina las obviamente malas. Es mejor entregar 400 buenas que 600 con basura.</div>
+        </div>
+
+        <div class="block">
+            <div class="block-time">Manana (22 de Abril)</div>
+            <h3>Entrega de video</h3>
+            <ul>
+                <li>Editar video completo del evento</li>
+                <li>Editar video highlight con musica (sin narracion)</li>
+                <li>Formato: horizontal para juntas/presentaciones</li>
+                <li>Subir y compartir enlace</li>
+            </ul>
+        </div>
+
+        <div class="block">
+            <div class="block-time">3-5 dias despues</div>
+            <h3>Fotos editadas</h3>
+            <ul>
+                <li>Esperar seleccion del cliente (15-20 fotos)</li>
+                <li>Editar las seleccionadas</li>
+                <li>Entregar via enlace o USB</li>
+            </ul>
+        </div>
+
+        <div class="block">
+            <div class="block-time">Viernes 24 de Abril</div>
+            <h3>Cobro</h3>
+            <ul>
+                <li>Confirmar pago: $6,000 + IVA por transferencia</li>
+                <li>Enviar factura si aplica</li>
+            </ul>
+        </div>
+
+        <div class="divider">- - -</div>
+
+        <!-- Quick reference -->
+        <div class="phase">Referencia rapida</div>
+        <div class="block">
+            <h3>Configuracion de camara sugerida</h3>
+            <ul>
+                <li><strong>Modo:</strong> Aperture Priority (A/Av) o Manual</li>
+                <li><strong>ISO:</strong> Auto 100-3200 (interiores puede subir)</li>
+                <li><strong>Apertura:</strong> f/2.8-4 para personas, f/1.8 para close-ups de comida</li>
+                <li><strong>WB:</strong> Manual (medir en el estudio, no dejar en auto)</li>
+                <li><strong>Formato:</strong> RAW + JPG (RAW para edicion, JPG para entrega rapida)</li>
+                <li><strong>AF:</strong> Continuo (AF-C) para personas moviendose en la cocina</li>
+            </ul>
+        </div>
+        <div class="block">
+            <h3>Tomas obligatorias para Thermomix</h3>
+            <ul>
+                <li>La maquina Thermomix en accion (minimo 10 fotos distintas)</li>
+                <li>Logo Thermomix visible en las fotos del espacio</li>
+                <li>Participantes interactuando con la Thermomix</li>
+                <li>Close-up del panel de la Thermomix</li>
+                <li>Platillo saliendo de la Thermomix</li>
+            </ul>
+            <div class="warn">Recuerda: es un evento de MARCA. La Thermomix debe aparecer protagonicamente en muchas fotos. No es solo un evento de cocina cualquiera.</div>
+        </div>
+        <div class="block" style="border-radius: 0 0 12px 12px;">
+            <h3>Video: que grabar</h3>
+            <ul>
+                <li>Camara fija: plano abierto de toda la sesion (no la muevas)</li>
+                <li>Segunda camara/celular: detalles, close-ups, b-roll</li>
+                <li>Audio ambiente: risas, comentarios, sonidos de cocina</li>
+                <li>Minimo 1 toma de dron del exterior del estudio</li>
+                <li>Entrevista corta a Christiane o al chef (30 seg) para el highlight</li>
+            </ul>
+        </div>
+
+    </div>
+
+    <!-- Contact bar -->
+    <div class="contact-float">
+        <span class="name">Christiane - Thermomix</span>
+        <a href="tel:+5215579869614">Llamar</a>
+    </div>
+
+    <script>
+        // Reloj en vivo
+        function updateClock() {
+            var now = new Date();
+            var h = String(now.getHours()).padStart(2, '0');
+            var m = String(now.getMinutes()).padStart(2, '0');
+            var s = String(now.getSeconds()).padStart(2, '0');
+            document.getElementById('reloj').textContent = h + ':' + m + ':' + s;
+
+            // Siguiente actividad
+            var hour = now.getHours();
+            var min = now.getMinutes();
+            var t = hour * 60 + min;
+            var next = '';
+            if (t < 480) next = 'Revision de equipo a las 8:00';
+            else if (t < 570) next = 'Salir hacia Leon';
+            else if (t < 600) next = 'Llegada al estudio 9:30-10:00';
+            else if (t < 630) next = 'Montaje de equipo';
+            else if (t < 660) next = 'B-roll de ambientacion';
+            else if (t < 675) next = 'Sesion 1: llegada de participantes';
+            else if (t < 720) next = 'Sesion 1: demostracion';
+            else if (t < 780) next = 'Sesion 1: participantes cocinando';
+            else if (t < 810) next = 'Sesion 1: platillos + cierre';
+            else if (t < 870) next = 'Pausa: respaldo y recarga';
+            else if (t < 900) next = 'Seleccion rapida para Christiane';
+            else if (t < 990) next = 'Tiempo libre / dron';
+            else if (t < 1020) next = 'Prep sesion 2: revisar equipo';
+            else if (t < 1035) next = 'Sesion 2: llegada grupo 2';
+            else if (t < 1140) next = 'Sesion 2: cobertura completa';
+            else if (t < 1170) next = 'Sesion 2: cierre';
+            else if (t < 1200) next = 'Desmontaje';
+            else if (t < 1230) next = 'Respaldo final';
+            else if (t < 1320) next = 'Entrega de fotos sin editar';
+            else next = 'Evento terminado';
+
+            document.getElementById('nextUp').textContent = next;
+        }
+        updateClock();
+        setInterval(updateClock, 1000);
+
+        // Checklist persistente
+        var CHECKS_KEY = 'thermomix_itinerario_checks';
+        function getChecks() {
+            try { return JSON.parse(localStorage.getItem(CHECKS_KEY) || '{}'); } catch(e) { return {}; }
+        }
+        function saveChecks(data) {
+            try { localStorage.setItem(CHECKS_KEY, JSON.stringify(data)); } catch(e) {}
+        }
+
+        function toggleCheck(item) {
+            var box = item.querySelector('.check-box');
+            var done = box.classList.toggle('done');
+            box.textContent = done ? '✓' : '';
+            item.classList.toggle('done-item', done);
+
+            // Guardar estado
+            var all = document.querySelectorAll('.check-item');
+            var data = {};
+            all.forEach(function(el, i) {
+                data[i] = el.querySelector('.check-box').classList.contains('done');
+            });
+            saveChecks(data);
+        }
+
+        // Restaurar checks guardados
+        (function() {
+            var data = getChecks();
+            var all = document.querySelectorAll('.check-item');
+            all.forEach(function(el, i) {
+                if (data[i]) {
+                    var box = el.querySelector('.check-box');
+                    box.classList.add('done');
+                    box.textContent = '✓';
+                    el.classList.add('done-item');
+                }
+            });
+        })();
+    </script>
+
+</body>
+</html>
