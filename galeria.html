@@ -455,6 +455,7 @@
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
     <footer>
         <p>Thermomix México | Cobertura por <a href="https://foro7.invitados.org">Foro 7 Producciones</a></p>
     </footer>
@@ -495,22 +496,37 @@
             } catch(e) { console.error('dbDelete error:', e); return false; }
         }
 
-        // ─── Realtime bidireccional via polling (compatible con todos los navegadores) ───
-        let pollTimer = null;
-        let lastHash = '';
+        // ─── Realtime bidireccional (SDK jsdelivr + persistSession:false) ───
+        let _lastSync = 0;
 
         function setupRealtime() {
-            document.getElementById('rtDot').classList.add('connected');
-            pollTimer = setInterval(pollChanges, 3000);
+            if (!window.supabase || !window.supabase.createClient) {
+                console.warn('[RT] SDK no cargado, sin realtime');
+                return;
+            }
+            try {
+                const client = window.supabase.createClient(SB_URL, SB_KEY, {
+                    auth: { persistSession: false }
+                });
+                client.channel('thermomix-ediciones-rt')
+                    .on('postgres_changes', {
+                        event: '*',
+                        schema: 'public',
+                        table: TABLE
+                    }, (payload) => {
+                        // Ignorar eco de cambios propios (3s ventana)
+                        if (Date.now() - _lastSync < 3000) return;
+                        reloadFromDB();
+                    })
+                    .subscribe((status) => {
+                        document.getElementById('rtDot').classList.toggle('connected', status === 'SUBSCRIBED');
+                    });
+            } catch(e) { console.warn('[RT] Error:', e); }
         }
 
-        async function pollChanges() {
+        async function reloadFromDB() {
             const data = await dbSelect();
-            const newHash = JSON.stringify(data);
-            if (newHash === lastHash) return;
-            lastHash = newHash;
-
-            // Detectar eliminaciones
+            // Limpiar eliminaciones
             const newFotos = new Set(data.map(r => r.foto));
             Object.keys(ediciones).forEach(foto => {
                 if (!newFotos.has(foto)) {
@@ -518,18 +534,12 @@
                     updatePhotoCard(foto);
                 }
             });
-
-            // Aplicar inserts y updates
+            // Aplicar inserts/updates
             data.forEach(row => {
-                const prev = ediciones[row.foto];
-                if (!prev || prev.updated_at !== row.updated_at || prev.id !== row.id) {
-                    ediciones[row.foto] = row;
-                    updatePhotoCard(row.foto);
-                    if (document.getElementById('lightbox').classList.contains('active') && photos[currentIndex] === row.foto) {
-                        loadPanelFromState();
-                    }
-                }
+                ediciones[row.foto] = row;
+                updatePhotoCard(row.foto);
             });
+            if (document.getElementById('lightbox').classList.contains('active')) loadPanelFromState();
             updateStats();
         }
 
@@ -690,6 +700,7 @@
             if (isSelected) {
                 toggle.classList.remove('on');
                 if (ediciones[foto]) {
+                    _lastSync = Date.now();
                     await dbDelete(ediciones[foto].id);
                     delete ediciones[foto];
                     updatePhotoCard(foto);
@@ -698,6 +709,7 @@
                 showSaveStatus('saved', 'Eliminada');
             } else {
                 toggle.classList.add('on');
+                _lastSync = Date.now();
                 const row = { foto, edicion: '', estado: 'pendiente', notas: '', seleccionada: true };
                 const inserted = await dbInsert(row);
                 if (inserted) {
@@ -741,6 +753,7 @@
                 updated_at: new Date().toISOString()
             };
 
+            _lastSync = Date.now();
             const ok = await dbUpdate(data.id, updates);
             if (ok) {
                 Object.assign(ediciones[foto], updates);
